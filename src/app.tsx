@@ -97,6 +97,7 @@ export function App() {
 		<div className="app">
 			<h1 className="font-bold text-white">The art of war</h1>
 			<h2 className="font-bold text-white">Sun Tzu</h2>
+			<iframe className={"my-3"} width="560" height="315" src="https://www.youtube-nocookie.com/embed/fDAnmujWlsM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 			{Object.keys(chapters).map((chapter, index) => (
 				<Chapter key={index} title={chapter} texts={chapters[chapter]} />
 			))}
