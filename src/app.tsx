@@ -1,27 +1,36 @@
-import { useEffect, useRef, useState } from "preact/hooks";
+import { StateUpdater, useEffect, useRef, useState } from "preact/hooks";
+import { ChangeEvent } from "preact/compat";
 import book from "./book.txt";
 import "./app.css";
+
+function loadStorage<T>(key: string, setter: StateUpdater<T>) {
+	const value = localStorage.getItem(key);
+	if (value) setter(JSON.parse(value));
+}
 
 function Chapter({ title, texts }: { title: string; texts: string[] }) {
 	const [show, setShow] = useState(false);
 	const [read, setRead] = useState<boolean[]>(Array(texts.length).fill(false));
+	const [notes, setNotes] = useState<string[]>(Array(texts.length).fill(""));
 	const chapterRef = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
 		chapterRef.current = document.getElementById(title);
-
-		const localRead = localStorage.getItem(title);
-		if (localRead) setRead(JSON.parse(localRead));
+		loadStorage(title, setRead);
+		loadStorage(`${title}-notes`, setNotes);
 	}, []);
 
 	useEffect(() => {
 		const className = "opacity-50";
+		const classNames = chapterRef.current!.classList;
 
-		if (read.every((val) => val)) chapterRef.current?.classList.add(className);
-		else chapterRef.current?.classList.remove(className);
+		if (read.every((val) => val)) classNames.add(className);
+		else classNames.remove(className);
 
 		localStorage.setItem(title, JSON.stringify(read));
 	}, [read]);
+
+	useEffect(() => { localStorage.setItem(`${title}-notes`, JSON.stringify(notes)); }, [notes]);
 
 	return (
 		<div id={title} className="m-10 bg-rose-600 rounded-2xl p-4">
@@ -44,6 +53,15 @@ function Chapter({ title, texts }: { title: string; texts: string[] }) {
 							>
 								<p className={"text-xl"}>{text}</p>
 							</button>
+							<br />
+							<input
+								hidden={!read[index]}
+								type="text"
+								value={notes[index]}
+								className={"bg-white my-2 p-2"}
+								placeholder={"Notes"}	
+								onChange={(e: ChangeEvent<HTMLInputElement>) => setNotes((old) => [...old.splice(0, index), e.currentTarget.value, ...old])}
+							/>
 							<br />
 							<br />
 						</>
