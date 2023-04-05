@@ -3,10 +3,12 @@ import { ChangeEvent } from "preact/compat";
 import book from "./book.txt";
 import "./app.css";
 
-function loadStorage<T>(key: string, setter: StateUpdater<T>) {
+function loadStorage(key: string, setter: StateUpdater<any>) {
 	const value = localStorage.getItem(key);
 	if (value) setter(JSON.parse(value));
 }
+
+const saveStorage = (key: string, value: any) => localStorage.setItem(key, JSON.stringify(value));
 
 function Chapter({ title, texts }: { title: string; texts: string[] }) {
 	const [show, setShow] = useState(false);
@@ -16,7 +18,7 @@ function Chapter({ title, texts }: { title: string; texts: string[] }) {
 
 	useEffect(() => {
 		chapterRef.current = document.getElementById(title);
-		loadStorage(title, setRead);
+		loadStorage(`${title}-read`, setRead);
 		loadStorage(`${title}-notes`, setNotes);
 	}, []);
 
@@ -27,10 +29,20 @@ function Chapter({ title, texts }: { title: string; texts: string[] }) {
 		if (read.every((val) => val)) classNames.add(className);
 		else classNames.remove(className);
 
-		localStorage.setItem(title, JSON.stringify(read));
+		saveStorage(`${title}-read`, read);
 	}, [read]);
 
-	useEffect(() => { localStorage.setItem(`${title}-notes`, JSON.stringify(notes)); }, [notes]);
+	useEffect(() => {
+		saveStorage(`${title}-notes`, notes);
+	}, [notes]);
+
+	function handleNotesChange(e: ChangeEvent<HTMLInputElement>, index: number) {
+		setNotes((old) => {
+			const newNotes = [...old];
+			newNotes[index] = e.currentTarget.value;
+			return newNotes;
+		});
+	}
 
 	return (
 		<div id={title} className="m-10 bg-rose-600 rounded-2xl p-4">
@@ -54,14 +66,7 @@ function Chapter({ title, texts }: { title: string; texts: string[] }) {
 								<p className={"text-xl"}>{text}</p>
 							</button>
 							<br />
-							<input
-								hidden={!read[index]}
-								type="text"
-								value={notes[index]}
-								className={"bg-white my-2 p-2"}
-								placeholder={"Notes"}	
-								onChange={(e: ChangeEvent<HTMLInputElement>) => setNotes((old) => [...old.splice(0, index), e.currentTarget.value, ...old])}
-							/>
+							<input hidden={!read[index]} type="text" value={notes[index]} className={"bg-white my-2 p-2"} placeholder={"Notes"} onChange={(e) => handleNotesChange(e, index)} />
 							<br />
 							<br />
 						</>
@@ -76,28 +81,51 @@ type Chapters = { [key: string]: string[] };
 export function App() {
 	const [chapters, setChapters] = useState<Chapters>({});
 
-	useEffect(() => {
-		fetch(book).then((response) => {
-			response.text().then((text) => {
-				const chapters: Chapters = {};
-				let currentChapter = "";
-				for (const line of text.split("\n")) {
-					if (!isNaN(parseInt(line[0]))) chapters[currentChapter].push(line);
-					else {
-						currentChapter = line;
-						chapters[currentChapter] = [];
-					}
-				}
-				setChapters(chapters);
-			});
-		});
-	}, []);
+	useEffect(() => { fetch(book).then(response => response.text().then(setTextToChapters)); }, []);
+
+	function setTextToChapters(text: string) {
+		const chapters: Chapters = {};
+		let currentChapter = "";
+		for (const line of text.split("\n")) {
+			if (!isNaN(parseInt(line[0]))) chapters[currentChapter].push(line);
+			else {
+				currentChapter = line;
+				chapters[currentChapter] = [];
+			}
+		}
+		setChapters(chapters);
+	}
+
+	function downloadNotes() {
+		const element = document.createElement("a");
+
+		let text = "";
+		for (const chapter of Object.keys(chapters)) {
+			text += chapter + "\n";
+			const notes = localStorage.getItem(`${chapter}-notes`);
+			if (notes) JSON.parse(notes).forEach((note: string) => (text += note + "\n"));
+		}
+
+		element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+		element.setAttribute("download", "");
+		element.click();
+	}
 
 	return (
 		<div className="app">
 			<h1 className="font-bold text-white">The art of war</h1>
 			<h2 className="font-bold text-white">Sun Tzu</h2>
-			<iframe className={"my-3"} width="560" height="315" src="https://www.youtube-nocookie.com/embed/fDAnmujWlsM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<iframe
+				className={"my-3"}
+				width="560"
+				height="315"
+				src="https://www.youtube-nocookie.com/embed/fDAnmujWlsM"
+				title="YouTube video player"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+			></iframe>
+			<button className={"font-bold text-white text-3xl m-2 bg-rose-600 w-full hover:bg-rose-900"} onClick={() => downloadNotes()}>
+				Download Notes
+			</button>
 			{Object.keys(chapters).map((chapter, index) => (
 				<Chapter key={index} title={chapter} texts={chapters[chapter]} />
 			))}
