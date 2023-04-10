@@ -1,6 +1,6 @@
 import { StateUpdater, useEffect, useRef, useState } from "preact/hooks";
 import { ChangeEvent } from "preact/compat";
-import book from "./book.txt";
+import BOOK from "./book.txt";
 import "./app.css";
 
 function loadStorage(key: string, setter: StateUpdater<any>) {
@@ -10,10 +10,11 @@ function loadStorage(key: string, setter: StateUpdater<any>) {
 
 const saveStorage = (key: string, value: any) => localStorage.setItem(key, JSON.stringify(value));
 
-function Chapter({ title, texts }: { title: string; texts: string[] }) {
+function Chapter({ title, texts, setLastReadId }: { title: string; texts: string[], setLastReadId: StateUpdater<string> }) {
 	const [show, setShow] = useState(false);
 	const [read, setRead] = useState<boolean[]>(Array(texts.length).fill(false));
 	const [notes, setNotes] = useState<string[]>(Array(texts.length).fill(""));
+	const [linesRead, setLinesRead] = useState(0)
 	const chapterRef = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
@@ -30,11 +31,10 @@ function Chapter({ title, texts }: { title: string; texts: string[] }) {
 		else classNames.remove(className);
 
 		saveStorage(`${title}-read`, read);
+		setLinesRead(read.filter(val => val).length)
 	}, [read]);
 
-	useEffect(() => {
-		saveStorage(`${title}-notes`, notes);
-	}, [notes]);
+	useEffect(() => { saveStorage(`${title}-notes`, notes); }, [notes]);
 
 	function handleNotesChange(e: ChangeEvent<HTMLInputElement>, index: number) {
 		setNotes((old) => {
@@ -44,23 +44,29 @@ function Chapter({ title, texts }: { title: string; texts: string[] }) {
 		});
 	}
 
+	function handleReadChange(event: ChangeEvent<HTMLButtonElement>, index: number) {
+		setLastReadId(event.currentTarget.id)
+		setRead((old) => {
+			const newRead = [...old];
+			newRead[index] = !newRead[index];
+			return newRead;
+		});
+	}
+
 	return (
 		<div id={title} className="m-10 bg-rose-600 rounded-2xl p-4">
-			<button onClick={() => setShow((val) => !val)} className={"font-bold text-white text-3xl m-2 bg-rose-600 w-full hover:bg-rose-900"}>
-				{title}
+			<button onClick={() => setShow((val) => !val)} className={"capitalize font-bold text-white text-3xl m-2 bg-rose-600 w-full hover:bg-rose-900"}>
+				{title} {show ? "▲" : "▼"}
+				<p className={"text-xl"}>{notes.filter(note => note).length} notes</p>
+				<p className={"text-xl"}>{linesRead} / {read.length} read ({Math.round(linesRead / read.length * 100)}%)</p>
 			</button>
 			{show
 				? texts.map((text, index) => (
 						<>
 							<button
 								key={index}
-								onClick={() =>
-									setRead((old) => {
-										const newRead = [...old];
-										newRead[index] = !newRead[index];
-										return newRead;
-									})
-								}
+								id={`${title}-${index}`}
+								onClick={e => handleReadChange(e, index)}
 								className={read[index] ? "bg-white opacity-50 rounded p-4" : "bg-white rounded p-4"}
 							>
 								<p className={"text-xl"}>{text}</p>
@@ -80,18 +86,23 @@ type Chapters = { [key: string]: string[] };
 
 export function App() {
 	const [chapters, setChapters] = useState<Chapters>({});
+	const [bookInfo, setBookInfo] = useState({ title: "", desc: "", author: "", video: "" })
+	const [lastReadId, setLastReadId] = useState("")
 
-	useEffect(() => { fetch(book).then(response => response.text().then(setTextToChapters)); }, []);
+	useEffect(() => { 
+		fetch(BOOK).then(response => response.text().then(setTextToChapters)); 
+		loadStorage("lastReadId", setLastReadId);
+	}, []);
+	useEffect(() => { saveStorage("lastReadId", lastReadId); }, [lastReadId]);
 
 	function setTextToChapters(text: string) {
 		const chapters: Chapters = {};
-		let currentChapter = "";
-		for (const line of text.split("\n")) {
-			if (!isNaN(parseInt(line[0]))) chapters[currentChapter].push(line);
-			else {
-				currentChapter = line;
-				chapters[currentChapter] = [];
-			}
+		const [title, desc, author] = text.split("\n", 3);
+		setBookInfo({ title, desc, author, video: "NZdiH3TrbKU" })
+		for (const chapter of text.split("\n\n")) {
+			const lines = chapter.split("\n");
+			const title = lines[0].split(" ", 3).join(" ");
+			chapters[title] = lines;
 		}
 		setChapters(chapters);
 	}
@@ -111,15 +122,30 @@ export function App() {
 		element.click();
 	}
 
+	function scrollToLastRead() {
+		if (!lastReadId) return;
+
+		const element = document.getElementById(lastReadId);
+		if (element) element.scrollIntoView({ behavior: "smooth" });
+		else {
+			const chapter = document.getElementById(lastReadId.split("-")[0]);
+			if (!chapter) return;
+			// @ts-ignore
+			chapter.childNodes[0].click();
+			chapter.scrollIntoView({ behavior: "smooth" });
+		}
+	}
+
 	return (
 		<div className="app">
-			<h1 className="font-bold text-white">The art of war</h1>
-			<h2 className="font-bold text-white">Sun Tzu</h2>
+			<h1 className="font-bold text-white">{bookInfo.title}</h1>
+			<h2 className="font-bold text-white">{bookInfo.author}</h2>
+			<p className="font-bold text-white">{bookInfo.desc}</p>
 			<iframe
-				className={"my-3"}
+				className={"my-3 w-full"}
 				width="560"
 				height="315"
-				src="https://www.youtube-nocookie.com/embed/fDAnmujWlsM"
+				src={`https://www.youtube-nocookie.com/embed/${bookInfo.video}`}
 				title="YouTube video player"
 				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 			></iframe>
@@ -127,8 +153,9 @@ export function App() {
 				Download Notes
 			</button>
 			{Object.keys(chapters).map((chapter, index) => (
-				<Chapter key={index} title={chapter} texts={chapters[chapter]} />
+				<Chapter key={index} title={chapter} texts={chapters[chapter]} setLastReadId={setLastReadId} />
 			))}
+			<button onClick={scrollToLastRead} className={"sticky bottom-2 w-fit flex border-2 rounded p-2 border-white border-solid font-bold text-white text-3xl bg-rose-600 hover:bg-rose-900"}>Go to Last Read</button>
 		</div>
 	);
 }
