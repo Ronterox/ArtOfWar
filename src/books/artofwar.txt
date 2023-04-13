@@ -1,3 +1,7 @@
+The Art Of War
+A Good General Vital Guide
+Tsun Zu
+https://www.youtube.com/watch?v=fDAnmujWlsM
 I. Laying Plans
 1. Sun Tzu said: The art of war is of vital importance to the State.
 2. It is a matter of life and death, a road either to safety or to ruin. Hence it is a subject of inquiry which can on no account be neglected.
@@ -24,6 +28,7 @@ I. Laying Plans
 24. Attack him where he is unprepared, appear where you are not expected.
 25. These military devices, leading to victory, must not be divulged beforehand.
 26. Now the general who wins a battle makes many calculations in his temple ere the battle is fought. The general who loses a battle makes but few calculations beforehand. Thus do many calculations lead to victory, and few calculations to defeat: how much more no calculation at all! It is by attention to this point that I can foresee who is likely to win or lose.
+
 II. Waging War
 1. Sun Tzu said: In the operations of war, where there are in the field a thousand swift chariots, as many heavy chariots, and a hundred thousand mail-clad soldiers, with provisions enough to carry them a thousand li, the expenditure at home and at the front, including entertainment of guests, small items such as glue and paint, and sums spent on chariots and armor, will reach the total of a thousand ounces of silver per day. Such is the cost of raising an army of 100,000 men.
 2. When you engage in actual fighting, if victory is long in coming, then men's weapons will grow dull and their ardor will be damped. If you lay siege to a town, you will exhaust your strength.
@@ -44,6 +49,7 @@ II. Waging War
 18. This is called, using the conquered foe to augment one's own strength.
 19. In war, then, let your great object be victory, not lengthy campaigns.
 20. Thus it may be known that the leader of armies is the arbiter of the people's fate, the man on whom it depends whether the nation shall be in peace or in peril.
+
 III. Attack by Stratagem
 1. Sun Tzu said: In the practical art of war, the best thing of all is to take the enemy's country whole and intact; to shatter and destroy it is not so good. So, too, it is better to recapture an army entire than to destroy it, to capture a regiment, a detachment or a company entire than to destroy them.
 2. Hence to fight and conquer in all your battles is not supreme excellence; supreme excellence consists in breaking the enemy's resistance without fighting.
@@ -63,6 +69,7 @@ III. Attack by Stratagem
 16. But when the army is restless and distrustful, trouble is sure to come from the other feudal princes. This is simply bringing anarchy into the army, and flinging victory away.
 17. Thus we may know that there are five essentials for victory: (1) He will win who knows when to fight and when not to fight. (2) He will win who knows how to handle both superior and inferior forces. (3) He will win whose army is animated by the same spirit throughout all its ranks. (4) He will win who, prepared himself, waits to take the enemy unprepared. (5) He will win who has military capacity and is not interfered with by the sovereign.
 18. Hence the saying: If you know the enemy and know yourself, you need not fear the result of a hundred battles. If you know yourself but not the enemy, for every victory gained you will also suffer a defeat. If you know neither the enemy nor yourself, you will succumb in every battle.
+
 IV. Tactical Dispositions
 1. Sun Tzu said: The good fighters of old first put themselves beyond the possibility of defeat, and then waited for an opportunity of defeating the enemy.
 2. To secure ourselves against defeat lies in our own hands, but the opportunity of defeating the enemy is provided by the enemy himself.
@@ -84,6 +91,7 @@ IV. Tactical Dispositions
 18. Measurement owes its existence to Earth; Estimation of quantity to Measurement; Calculation to Estimation of quantity; Balancing of chances to Calculation; and Victory to Balancing of chances.
 19. A victorious army opposed to a routed one, is as a pound's weight placed in the scale against a single grain.
 20. The onrush of a conquering force is like the bursting of pent-up waters into a chasm a thousand fathoms deep.
+
 V. Energy
 1. Sun Tzu said: The control of a large force is the same principle as the control of a few men: it is merely a question of dividing up their numbers.
 2. Fighting with a large army under your command is nowise different from fighting with a small one: it is merely a question of instituting signs and signals.
@@ -108,6 +116,7 @@ V. Energy
 21. The clever combatant looks to the effect of combined energy, and does not require too much from individuals. Hence his ability to pick out the right men and utilize combined energy.
 22. When he utilizes combined energy, his fighting men become as it were like unto rolling logs or stones. For it is the nature of a log or stone to remain motionless on level ground, and to move when on a slope; if four-cornered, to come to a standstill, but if round-shaped, to go rolling down.
 23. Thus the energy developed by good fighting men is as the momentum of a round stone rolled down a mountain thousands of feet in height. So much on the subject of energy.
+
 VI. Weak Points and Strong
 1. Sun Tzu said: Whoever is first in the field and awaits the coming of the enemy, will be fresh for the fight; whoever is second in the field and has to hasten to battle will arrive exhausted.
 2. Therefore the clever combatant imposes his will on the enemy, but does not allow the enemy's will to be imposed on him.
@@ -143,6 +152,7 @@ VI. Weak Points and Strong
 32. Therefore, just as water retains no constant shape, so in warfare there are no constant conditions.
 33. He who can modify his tactics in relation to his opponent and thereby succeed in winning, may be called a heaven-born captain.
 34. The five elements (water, fire, wood, metal, earth) are not always equally predominant; the four seasons make way for each other in turn. There are short days and long; the moon has its periods of waning and waxing.
+
 VII. Maneuvering
 1. Sun Tzu said: In war, the general receives his commands from the sovereign.
 2. Having collected an army and concentrated his forces, he must blend and harmonize the different elements thereof before pitching his camp.
@@ -181,6 +191,7 @@ VII. Maneuvering
 35. Do not swallow bait offered by the enemy. Do not interfere with an army that is returning home.
 36. When you surround an army, leave an outlet free. Do not press a desperate foe too hard.
 37. Such is the art of warfare.
+
 VIII. Variation in Tactics
 1. Sun Tzu said: In war, the general receives his commands from the sovereign, collects his army and concentrates his forces
 2. When in difficult country, do not encamp. In country where high roads intersect, join hands with your allies. Do not linger in dangerously isolated positions. In hemmed-in situations, you must resort to stratagem. In desperate position, you must fight.
@@ -196,6 +207,7 @@ VIII. Variation in Tactics
 12. There are five dangerous faults which may affect a general: (1) Recklessness, which leads to destruction; (2) cowardice, which leads to capture; (3) a hasty temper, which can be provoked by insults; (4) a delicacy of honor which is sensitive to shame; (5) over-solicitude for his men, which exposes him to worry and trouble.
 13. These are the five besetting sins of a general, ruinous to the conduct of war.
 14. When an army is overthrown and its leader slain, the cause will surely be found among these five dangerous faults. Let them be a subject of meditation.
+
 IX. The Army on the March
 1. Sun Tzu said: We come now to the question of encamping the army, and observing signs of the enemy. Pass quickly over mountains, and keep in the neighborhood of valleys.
 2. Camp in high places, facing the sun. Do not climb heights in order to fight. So much for mountain warfare.
@@ -242,6 +254,7 @@ IX. The Army on the March
 43. Therefore soldiers must be treated in the first instance with humanity, but kept under control by means of iron discipline. This is a certain road to victory.
 44. If in training soldiers commands are habitually enforced, the army will be well-disciplined; if not, its discipline will be bad.
 45. If a general shows confidence in his men but always insists on his orders being obeyed, the gain will be mutual.
+
 X. Terrain
 1. Sun Tzu said: We may distinguish six kinds of terrain, to wit: (1) Accessible ground; (2) entangling ground; (3) temporizing ground; (4) narrow passes; (5) precipitous heights; (6) positions at a great distance from the enemy.
 2. Ground which can be freely traversed by both sides is called accessible.
@@ -274,6 +287,7 @@ X. Terrain
 29. If we know that the enemy is open to attack, and also know that our men are in a condition to attack, but are unaware that the nature of the ground makes fighting impracticable, we have still gone only halfway towards victory.
 30. Hence the experienced soldier, once in motion, is never bewildered; once he has broken camp, he is never at a loss.
 31. Hence the saying: If you know the enemy and know yourself, your victory will not stand in doubt; if you know Heaven and know Earth, you may make your victory complete.
+
 XI. The Nine Situations
 1. Sun Tzu said: The art of war recognizes nine varieties of ground: (1) Dispersive ground; (2) facile ground; (3) contentious ground; (4) open ground; (5) ground of intersecting highways; (6) serious ground; (7) difficult ground; (8) hemmed-in ground; (9) desperate ground.
 2. When a chieftain is fighting in his own territory, it is dispersive ground.
@@ -343,6 +357,7 @@ XI. The Nine Situations
 66. Forestall your opponent by seizing what he holds dear, and subtly contrive to time his arrival on the ground.
 67. Walk in the path defined by rule, and accommodate yourself to the enemy until you can fight a decisive battle.
 68. At first, then, exhibit the coyness of a maiden, until the enemy gives you an opening; afterwards emulate the rapidity of a running hare, and it will be too late for the enemy to oppose you.
+
 XII. The Attack by Fire
 1. Sun Tzu said: There are five ways of attacking with fire. The first is to burn soldiers in their camp; the second is to burn stores; the third is to burn baggage trains; the fourth is to burn arsenals and magazines; the fifth is to hurl dropping fire amongst the enemy.
 2. In order to carry out an attack, we must have means available. The material for raising fire should always be kept in readiness.
@@ -366,6 +381,7 @@ XII. The Attack by Fire
 20. Anger may in time change to gladness; vexation may be succeeded by content.
 21. But a kingdom that has once been destroyed can never come again into being; nor can the dead ever be brought back to life.
 22. Hence the enlightened ruler is heedful, and the good general full of caution. This is the way to keep a country at peace and an army intact.
+
 XIII. The Use of Spies
 1. Sun Tzu said: Raising a host of a hundred thousand men and marching them great distances entails heavy loss on the people and a drain on the resources of the State. The daily expenditure will amount to a thousand ounces of silver. There will be commotion at home and abroad, and men will drop down exhausted on the highways. As many as seven hundred thousand families will be impeded in their labor.
 2. Hostile armies may face each other for years, striving for the victory which is decided in a single day. This being so, to remain in ignorance of the enemy's condition simply because one grudges the outlay of a hundred ounces of silver in honors and emoluments, is the height of inhumanity.
