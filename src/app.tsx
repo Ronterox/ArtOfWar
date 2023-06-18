@@ -1,4 +1,4 @@
-import { StateUpdater, useEffect, useRef, useState } from "preact/hooks";
+import { StateUpdater, useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { ChangeEvent } from "preact/compat";
 import BOOKS from "./books/books";
 import "./app.css";
@@ -129,14 +129,23 @@ export function App() {
 		else {
 			const chapter = document.getElementById(lastReadId.split("-")[0]);
 			if (!chapter) return;
-			// @ts-ignore
-			chapter.childNodes[0].click();
+			(chapter.childNodes[0] as HTMLButtonElement).click();
 			chapter.scrollIntoView({ behavior: "smooth" });
 		}
 	}
 
-	const totalChapters = Object.keys(chapters).length;
-	const averageLinesPerChapter = Math.round(Object.values(chapters).reduce((acc, val) => acc + val.length, 0) / totalChapters);
+	const totalChapters = useMemo(() => Object.keys(chapters).length, [chapters]);
+	const averageLinesPerChapter = useMemo(() => Math.round(Object.values(chapters).reduce((acc, val) => acc + val.length, 0) / totalChapters), [chapters]);
+
+	const bookCompletionPercentage = useMemo(() => {
+		if (lastReadId === "") return 0;
+		let chaptersRead: number = 0;
+		for (const chapter of Object.keys(chapters)) {
+			const read = localStorage.getItem(`${chapter}-read`);
+			if (read) (JSON.parse(read) as boolean[]).every((val) => val) && chaptersRead++;
+		}
+		return Math.round((chaptersRead / totalChapters) * 100);
+	}, [chapters, lastReadId]);
 
 	return (
 		<div className="app">
@@ -153,6 +162,7 @@ export function App() {
 			<p className="font-bold text-red-300">
 				{totalChapters} chapters, average of {averageLinesPerChapter} lines per chapter
 			</p>
+			<p className="font-bold text-green-300">{bookCompletionPercentage}% read</p>
 			<iframe
 				className={"my-3 w-full"}
 				width="560"
