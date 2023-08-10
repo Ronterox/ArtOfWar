@@ -34,7 +34,9 @@ function Chapter({ title, texts, setLastReadId }: { title: string; texts: string
 		setLinesRead(read.filter((val) => val).length);
 	}, [read]);
 
-	useEffect(() => { saveStorage(`${title}-notes`, notes); }, [notes]);
+	useEffect(() => {
+		saveStorage(`${title}-notes`, notes);
+	}, [notes]);
 
 	function handleNotesChange(e: ChangeEvent<HTMLInputElement>, index: number) {
 		setNotes((old) => {
@@ -53,9 +55,18 @@ function Chapter({ title, texts, setLastReadId }: { title: string; texts: string
 		});
 	}
 
+	function handleChapterCheck() {
+		setRead(new Array(read.length).fill(linesRead / read.length !== 1));
+		setLastReadId(`${title}-${read.length - 1}`);
+		setShow(true); // Because parent calls the reverse XD
+	}
+
 	return (
 		<div id={title} className="m-10 bg-rose-600 rounded-2xl p-4">
 			<button onClick={() => setShow((val) => !val)} className={"capitalize font-bold text-white text-3xl m-2 bg-rose-600 w-full hover:bg-rose-900"}>
+				<span className={"bg-black p-1 m-2 rounded"} onClick={handleChapterCheck}>
+					{linesRead / read.length === 1 ? "✅" : "🔴"}
+				</span>
 				{title} {show ? "▲" : "▼"}
 				<p className={"text-xl"}>{notes.filter((note) => note).length} notes</p>
 				<p className={"text-xl"}>
@@ -92,12 +103,16 @@ export function App() {
 		loadStorage(`${book}-lastReadId`, setLastReadId);
 	}, [book]);
 
-	useEffect(() => { saveStorage(`${book}-lastReadId`, lastReadId); }, [lastReadId]);
+	useEffect(() => {
+		saveStorage(`${book}-lastReadId`, lastReadId);
+	}, [lastReadId]);
 
 	function setTextToChapters(text: string) {
 		const chapters: Chapters = {};
 		const [title, desc, author, videoLink] = text.split("\n", 4);
-		setBookInfo({ title, desc, author, video: videoLink.substring((videoLink.indexOf("?v=") + 3) | 0) });
+		const vidCode = videoLink.match(/watch\?v=(.+)/);
+		setBookInfo({ title, desc, author, video: vidCode ? vidCode[1] : "" });
+		
 		for (const chapter of text.split("\n\n")) {
 			const lines = chapter.split("\n");
 			const title = lines[0].split(" ", 3).join(" ");
@@ -119,6 +134,7 @@ export function App() {
 		element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
 		element.setAttribute("download", "");
 		element.click();
+		element.remove();
 	}
 
 	function scrollToLastRead() {
