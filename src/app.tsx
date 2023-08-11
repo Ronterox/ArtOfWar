@@ -10,7 +10,7 @@ function loadStorage(key: string, setter: StateUpdater<any>) {
 
 const saveStorage = (key: string, value: any) => localStorage.setItem(key, JSON.stringify(value));
 
-function Chapter({ title, texts, setLastReadId }: { title: string; texts: string[]; setLastReadId: StateUpdater<string> }) {
+function Chapter({ title, texts, setLastReadId, nextChapter }: { title: string; texts: string[]; setLastReadId: StateUpdater<string>; nextChapter?: string }) {
 	const [show, setShow] = useState(false);
 	const [read, setRead] = useState<boolean[]>(Array(texts.length).fill(false));
 	const [notes, setNotes] = useState<string[]>(Array(texts.length).fill(""));
@@ -76,7 +76,23 @@ function Chapter({ title, texts, setLastReadId }: { title: string; texts: string
 			{show
 				? texts.map((text, index) => (
 						<>
-							<button key={index} id={`${title}-${index}`} onClick={(e) => handleReadChange(e, index)} className={read[index] ? "bg-white opacity-50 rounded p-4" : "bg-white rounded p-4"}>
+							<button
+								onKeyDown={(e) => {
+									const nextButton = document.getElementById(`${title}-${index + 1}`) ?? document.getElementById(`${nextChapter}-0`);
+									if (e.code === "Enter" && nextButton) {
+										if (index + 1 === texts.length - 1) (document.getElementById(nextChapter + "")?.childNodes[0] as HTMLButtonElement).click();
+										nextButton.focus();
+										nextButton.click();
+										nextButton.click();
+										const bounding = nextButton.getBoundingClientRect();
+										if (bounding.bottom > window.innerHeight - bounding.height * 3) nextButton.scrollIntoView({ behavior: "smooth" });
+									}
+								}}
+								key={index}
+								id={`${title}-${index}`}
+								onClick={(e) => handleReadChange(e, index)}
+								className={read[index] ? "bg-white opacity-50 rounded p-4" : "bg-white rounded p-4"}
+							>
 								<p className={"text-xl"}>{text}</p>
 							</button>
 							<br />
@@ -111,8 +127,8 @@ export function App() {
 		const chapters: Chapters = {};
 		const [title, desc, author, videoLink] = text.split("\n", 4);
 		const vidCode = videoLink.match(/watch\?v=(.+)/);
-		setBookInfo({ title, desc, author, video: vidCode ? vidCode[1] : "" });
-		
+		setBookInfo({ title, desc, author, video: vidCode?.[1] ?? "" });
+
 		for (const chapter of text.split("\n\n")) {
 			const lines = chapter.split("\n");
 			const title = lines[0].split(" ", 3).join(" ");
@@ -137,16 +153,22 @@ export function App() {
 		element.remove();
 	}
 
-	function scrollToLastRead() {
-		if (!lastReadId) return;
+	function getLastReadIdElement(click: boolean = true): HTMLElement | null {
+		if (!lastReadId) return null;
 
-		const element = document.getElementById(lastReadId);
-		if (element) element.scrollIntoView({ behavior: "smooth" });
-		else {
-			const chapter = document.getElementById(lastReadId.split("-")[0]);
-			if (!chapter) return;
-			(chapter.childNodes[0] as HTMLButtonElement).click();
-			chapter.scrollIntoView({ behavior: "smooth" });
+		let lastRead = document.getElementById(lastReadId);
+		if (!lastRead) {
+			lastRead = document.getElementById(lastReadId.split("-")[0]);
+			click && (lastRead?.childNodes[0] as HTMLButtonElement).click();
+		}
+		return lastRead;
+	}
+
+	function scrollToLastRead() {
+		let lastRead = getLastReadIdElement();
+		if (lastRead){
+			lastRead.scrollIntoView({ behavior: "smooth" });
+			lastRead.focus();
 		}
 	}
 
@@ -190,8 +212,8 @@ export function App() {
 			<button className={"font-bold text-white text-3xl m-2 bg-rose-600 w-full hover:bg-rose-900"} onClick={() => downloadNotes()}>
 				Download Notes
 			</button>
-			{Object.keys(chapters).map((chapter) => (
-				<Chapter key={chapter} title={chapter} texts={chapters[chapter]} setLastReadId={setLastReadId} />
+			{Object.keys(chapters).map((chapter, i) => (
+				<Chapter key={chapter} title={chapter} texts={chapters[chapter]} setLastReadId={setLastReadId} nextChapter={Object.keys(chapters)[i + 1]} />
 			))}
 			<button onClick={scrollToLastRead} className={"sticky bottom-2 right-2 w-fit flex border-2 rounded p-2 border-white border-solid font-bold text-white text-3xl bg-rose-600 hover:bg-rose-900"}>
 				Go to Last Read
